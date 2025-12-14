@@ -38,6 +38,7 @@ function App() {
           <Route path="/card/2" element={<Card2 />} />
           <Route path="/card/3" element={<Card3 />} />
           <Route path="/card/4" element={<Card4 />} />
+          <Route path="/map" element={<Map />} />
           <Route path="/MeetingForm" element={<MeetingForm />} />
 
         </Routes >
