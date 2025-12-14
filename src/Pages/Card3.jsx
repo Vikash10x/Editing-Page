@@ -23,11 +23,11 @@ const Card1 = () => {
 
             <div
                 ref={containerRef}
-                className="md:flex md:items-center md:justify-center px-5 md:px-20 py-30 gap-10"
+                className="md:flex md:items-center md:justify-center px-5 px-5 md:px-20 md:pt-60 py-30 gap-10"
             >
                 <div
                     className={`
-                    transition-all duration-700 w-[100%] md:w-[66%]
+                    transition-all duration-700 w-[100%] md:w-[57%]
                     ${start ? "opacity-100 translate-x-0" : "opacity-0 translate-x-0"}
                     `}
                 >
@@ -85,16 +85,19 @@ const Card1 = () => {
                     <p className={`text-[25px] md:text-[28px] font-medium transition-all duration-600 delay-500
                         ${start ? "opacity-100 translate-y-0" : "opacity-0 translate-y-50"}`}
                     >We would love to hear from you!</p>
-                    <button
-                        className={`
-                        text-white py-2 px-7 md:py-2.5 md:px-8 border-2 border-white font-bold text-lg mt-5
-                        hover:bg-blue-800 hover:border-blue-800
-                        transition-all duration-600 delay-700
-                        ${start ? "opacity-100 translate-y-0" : "opacity-0 translate-y-30"}
-                        `}
-                    >
-                        Get in touch
-                    </button>
+
+                    <Link to="/map">
+                        <button
+                            className={`
+                            text-white py-2 px-7 md:py-2.5 md:px-8 border-2 border-white font-bold text-lg mt-5
+                            hover:bg-blue-800 hover:border-blue-800
+                            transition-all duration-600 delay-700
+                            ${start ? "opacity-100 translate-y-0" : "opacity-0 translate-y-30"}
+                            `}
+                        >
+                            Get in touch
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>
