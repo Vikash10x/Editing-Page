@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IoCallOutline, IoLocationOutline } from "react-icons/io5";
 import { TfiEmail } from "react-icons/tfi";
-import emailjs from "@emailjs/browser";
 
 const Map = () => {
     const containerRef = useRef(null);
@@ -25,41 +24,22 @@ const Map = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         setLoading(true);
 
-        emailjs
-            .send(
-                "YOUR_SERVICE_ID",
-                "YOUR_TEMPLATE_ID",
-                {
-                    name: form.name,
-                    email: form.email,
-                    phone: form.phone,
-                    message: form.message,
-                },
-                "YOUR_PUBLIC_KEY"
-            )
-            .then(
-                (result) => {
-                    console.log("Email sent:", result.text);
-                    setLoading(false);
-                    setSubmitted(true);
+        setTimeout(() => {
+            console.log(form);
+            setLoading(false);
+            setSubmitted(true);
 
-                    setForm({
-                        name: "",
-                        email: "",
-                        phone: "",
-                        message: "",
-                    });
-                },
-                (error) => {
-                    console.error("Email error:", error.text);
-                    setLoading(false);
-                    alert("Something went wrong. Please try again.");
-                }
-            );
+            setForm({
+                name: "",
+                email: "",
+                phone: "",
+                message: "",
+            });
+        }, 2000);
     };
-
 
     useEffect(() => {
         const handleOutsideClick = (e) => {
