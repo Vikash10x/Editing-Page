@@ -155,7 +155,7 @@ const Map = () => {
             </div>
 
             {/* ================= MAP KE NICHE CONTENT ================= */}
-            <div className="max-w-7xl mx-auto px-6 mt-140 md:mt-30 mb-20">
+            <div className="max-w-7xl mx-auto px-6 mt-160 md:mt-30 mb-20">
                 <div className="flex flex-col lg:flex-row justify-start lg:justify-end mr-0 lg:mr-40">
 
                     <div className="hidden lg:block flex-1"></div>

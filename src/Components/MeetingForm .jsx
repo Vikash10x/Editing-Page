@@ -1,22 +1,52 @@
 import React, { useState, useEffect, useRef } from "react";
 import MyCalendar from "./MyCalendar";
+import emailjs from "@emailjs/browser";
+
 
 const MeetingForm = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
     const [start, setStart] = useState(false);
-    const containerRef = useRef(null);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const form = useRef();
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [message, setMessage] = useState("");
+    const sendEmail = (e) => {
 
-    const [services, setServices] = useState({
-        video: false,
-        social: false,
-        corporate: false,
-    });
+        e.preventDefault();
+
+        if (!selectedDate) {
+            alert("Please select a date!");
+            return;
+        }
+        if (!selectedTime) {
+            alert("Please select a time!");
+            return;
+        }
+
+        setLoading(true);
+
+        emailjs
+            .sendForm(
+                "service_e598xk7",
+                "template_mjbjfnb",
+                form.current,
+                "yYEAqeWU0vFpz2-iF"
+            )
+            .then(
+                () => {
+                    setSuccess(true);
+                    setLoading(false);
+                    form.current.reset();
+                },
+                (error) => {
+                    console.error("EmailJS Error:", error);
+                    alert("Email send nahi hui 😢");
+                    setLoading(false);
+                }
+            );
+    };
+
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -28,41 +58,15 @@ const MeetingForm = () => {
             { threshold: 0.3 }
         );
 
-        if (containerRef.current) observer.observe(containerRef.current);
+        if (form.current) observer.observe(form.current);
     }, []);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
 
-        if (!selectedDate) return alert("Please select a date!");
-        if (!selectedTime) return alert("Please select a time!");
-
-        console.log({
-            name,
-            email,
-            phone,
-            selectedDate,
-            selectedTime,
-            services,
-            message,
-        });
-
-        alert("Form Submitted Successfully!");
-
-        setName("");
-        setEmail("");
-        setPhone("");
-        setMessage("");
-        setSelectedDate(null);
-        setSelectedTime(null);
-        setServices({ video: false, social: false, corporate: false });
-    };
 
     return (
         <div
-            ref={containerRef}
             className="
-        max-w-full md:max-w-4xl lg:max-w-5xl
+        max-w-full md:max-w-3xl lg:max-w-4xl
         mx-auto
         px-5 sm:px-8 md:px-10
         py-10 md:py-20 mt-10 md:mt-0
@@ -108,22 +112,27 @@ const MeetingForm = () => {
             />
 
             <form
-                onSubmit={handleSubmit}
+                ref={form}
+                onSubmit={sendEmail}
                 className={`
           mt-6
           transition-all duration-500 delay-700
           ${start ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
         `}
             >
+
+                <input type="hidden" name="date" value={selectedDate} />
+                <input type="hidden" name="time" value={selectedTime} />
+
                 <label className="text-[16px] md:text-lg">
                     Name <span className="text-red-700">*</span>
                 </label>
                 <input
                     className="w-full border p-3 rounded mb-5 mt-1 text-[17px] placeholder:text-black"
                     placeholder="Jane Smith"
-                    value={name}
+                    type="text"
+                    name="name"
                     required
-                    onChange={(e) => setName(e.target.value)}
                 />
 
                 <label className="text-[16px] md:text-lg">
@@ -132,9 +141,9 @@ const MeetingForm = () => {
                 <input
                     className="w-full border p-3 rounded mb-5 mt-1 text-[17px] placeholder:text-black"
                     placeholder="email@website.com"
-                    value={email}
+                    type="email"
+                    name="email"
                     required
-                    onChange={(e) => setEmail(e.target.value)}
                 />
 
                 <label className="text-[16px] md:text-lg">
@@ -143,9 +152,9 @@ const MeetingForm = () => {
                 <input
                     className="w-full border p-3 rounded mb-5 mt-1 text-[17px] placeholder:text-black"
                     placeholder="555-555-5555"
-                    value={phone}
+                    type="tel"
+                    name="phone"
                     required
-                    onChange={(e) => setPhone(e.target.value)}
                 />
 
                 <label className="text-[16px] md:text-[18px]">
@@ -156,43 +165,31 @@ const MeetingForm = () => {
                     <label className="flex items-center gap-3">
                         <input
                             type="checkbox"
+                            name="services"
+                            value="Video editing services"
                             className="w-4 h-4 accent-[#141c26]"
-                            checked={services.video}
-                            onChange={() =>
-                                setServices({ ...services, video: !services.video })
-                            }
                         />
-                        <span className="text-[16px] md:text-[18px]">
-                            Video editing services
-                        </span>
+                        <span>Video editing services</span>
                     </label>
 
                     <label className="flex items-center gap-3">
                         <input
                             type="checkbox"
+                            name="services"
+                            value="Social media video editing"
                             className="w-4 h-4 accent-[#141c26]"
-                            checked={services.social}
-                            onChange={() =>
-                                setServices({ ...services, social: !services.social })
-                            }
                         />
-                        <span className="text-[16px] md:text-[18px]">
-                            Social media video editing
-                        </span>
+                        <span>Social media video editing</span>
                     </label>
 
                     <label className="flex items-center gap-3">
                         <input
                             type="checkbox"
+                            name="services"
+                            value="Corporate video editing"
                             className="w-4 h-4 accent-[#141c26]"
-                            checked={services.corporate}
-                            onChange={() =>
-                                setServices({ ...services, corporate: !services.corporate })
-                            }
                         />
-                        <span className="text-[16px] md:text-[18px]">
-                            Corporate video editing
-                        </span>
+                        <span>Corporate video editing</span>
                     </label>
                 </div>
 
@@ -200,16 +197,16 @@ const MeetingForm = () => {
                 <textarea
                     className="w-full border p-3 rounded mb-4 mt-1 text-[16px]"
                     rows={5}
-                    value={message}
+                    name="message"
                     required
-                    onChange={(e) => setMessage(e.target.value)}
                 />
 
                 <button
                     type="submit"
+                    disabled={loading}
                     className="
             w-full
-            bg-[#0256c5] hover:bg-[#053d85]
+            bg-[#0256c5] hover:bg-[#053d85] cursor-pointer
             text-white
             py-3 md:py-4
             text-[16px] md:text-lg
@@ -217,8 +214,15 @@ const MeetingForm = () => {
             rounded
           "
                 >
-                    SUBMIT
+                    {loading ? "SENDING..." : "SUBMIT"}
                 </button>
+
+
+                {success && (
+                    <p className="text-black text-center mt-6">
+                        Message sent successfully ✅
+                    </p>
+                )}
             </form>
         </div>
     );
